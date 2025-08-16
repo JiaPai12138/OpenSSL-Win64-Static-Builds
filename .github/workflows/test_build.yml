@@ -20,11 +20,10 @@ jobs:
     - name: Setup NASM
       uses: ilammy/setup-nasm@v1
 
-    - name: Setup Visual Studio Environment
-      shell: powershell
-      run: |
-        # Load VS environment variables for x64 native tools
-        & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+    - name: Setup Developer Command Prompt (VS Build Tools)
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
 
     - name: Download OpenSSL source
       run: |
