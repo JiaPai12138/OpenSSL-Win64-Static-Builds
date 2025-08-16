@@ -24,7 +24,7 @@ jobs:
       shell: powershell
       run: |
         # Load VS environment variables for x64 native tools
-        & "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
     - name: Download OpenSSL source
       run: |
