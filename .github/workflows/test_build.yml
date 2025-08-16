@@ -27,23 +27,23 @@ jobs:
 
     - name: Download OpenSSL source
       run: |
-        curl -LO https://www.openssl.org/source/openssl-3.0.17.tar.gz
-        tar -xf openssl-3.0.17.tar.gz
+        curl -LO https://www.openssl.org/source/openssl-3.5.2.tar.gz
+        tar -xf openssl-3.5.2.tar.gz
 
     - name: Build OpenSSL Static x64
       shell: powershell
       run: |
-        cd openssl-3.0.17
+        cd openssl-3.5.2
         perl Configure VC-WIN64A no-shared no-dynamic-engine --prefix=$PWD\install
         nmake
         nmake install
 
     - name: Verify build output
-      run: dir openssl-3.0.17\install\lib
+      run: dir openssl-3.5.2\install\lib
 
     - name: Compress OpenSSL build to maximum 7z
       run: |
-        7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-test-static.7z openssl-3.0.17\install\lib\
+        7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-test-static.7z openssl-3.5.2\install\lib\
 
     - name: Upload builds
       uses: actions/upload-artifact@v4
