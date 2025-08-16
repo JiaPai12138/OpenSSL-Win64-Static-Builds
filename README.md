@@ -1,2 +1,2 @@
 # OpenSSL-Win64-Static-Builds
-Just for static MT libs
+Just for static MD libs

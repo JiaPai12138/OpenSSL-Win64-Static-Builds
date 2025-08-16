@@ -1,0 +1,43 @@
+name: Build OpenSSL Static Library
+on:
+  workflow_dispatch:
+  release:
+    types: [published, edited]
+
+
+jobs:
+  build-openssl:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v3
+
+    - name: Setup Perl (Strawberry Perl)
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: '5.38'
+
+    - name: Setup NASM
+      uses: ilammy/setup-nasm@v1
+
+    - name: Setup Visual Studio Environment
+      shell: powershell
+      run: |
+        # Load VS environment variables for x64 native tools
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+
+    - name: Download OpenSSL source
+      run: |
+        curl -LO https://www.openssl.org/source/openssl-3.1.4.tar.gz
+        tar -xf openssl-3.1.4.tar.gz
+
+    - name: Build OpenSSL Static x64
+      shell: powershell
+      run: |
+        cd openssl-3.1.4
+        perl Configure VC-WIN64A no-shared no-dynamic-engine --prefix=$PWD\install
+        nmake
+        nmake install
+
+    - name: Verify build output
+      run: dir openssl-3.1.4\install\lib
