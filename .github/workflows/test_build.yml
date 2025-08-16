@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout source
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup Perl (Strawberry Perl)
       uses: shogo82148/actions-setup-perl@v1
@@ -24,20 +24,33 @@ jobs:
       shell: powershell
       run: |
         # Load VS environment variables for x64 native tools
-        & "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+        & "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
     - name: Download OpenSSL source
       run: |
-        curl -LO https://www.openssl.org/source/openssl-3.1.4.tar.gz
-        tar -xf openssl-3.1.4.tar.gz
+        curl -LO https://www.openssl.org/source/openssl-3.0.17.tar.gz
+        tar -xf openssl-3.0.17.tar.gz
 
     - name: Build OpenSSL Static x64
       shell: powershell
       run: |
-        cd openssl-3.1.4
+        cd openssl-3.0.17
         perl Configure VC-WIN64A no-shared no-dynamic-engine --prefix=$PWD\install
         nmake
         nmake install
 
     - name: Verify build output
-      run: dir openssl-3.1.4\install\lib
+      run: dir openssl-3.0.17\install\lib
+
+    - name: Update GitHub Release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.event.release.tag_name }}
+        name: ${{ github.event.release.name }}
+        draft: false
+        prerelease: false
+        files: |
+          openssl-3.0.17/install/lib/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
