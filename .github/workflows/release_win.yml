@@ -18,11 +18,15 @@ jobs:
         run: |
           vcpkg install --triplet x64-windows-static-md
 
+      - name: Compress OpenSSL build to maximum 7z
+        run: |
+          7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-static.7z C:/vcpkg/packages/openssl_x64-windows-static-md/
+
       - name: Upload builds
         uses: actions/upload-artifact@v4
         with:
           name: OpenSSL_static
-          path: C:/vcpkg/packages/openssl_x64-windows-static-md/*
+          path: openssl-static.7z
 
       - name: Update GitHub Release
         if: github.event_name == 'release'
@@ -33,6 +37,6 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            C:/vcpkg/packages/openssl_x64-windows-static-md/*
+            openssl-static.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -41,11 +41,15 @@ jobs:
     - name: Verify build output
       run: dir openssl-3.0.17\install\lib
 
+    - name: Compress OpenSSL build to maximum 7z
+      run: |
+        7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-test-static.7z openssl-3.0.17\install\lib\
+
     - name: Upload builds
       uses: actions/upload-artifact@v4
       with:
         name: OpenSSL_static
-        path: openssl-3.0.17/install/lib/*
+        path: openssl-test-static.7z
 
     - name: Update GitHub Release
       if: github.event_name == 'release'
@@ -56,6 +60,6 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          openssl-3.0.17/install/lib/*
+          openssl-test-static.7z
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
