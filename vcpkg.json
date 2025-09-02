@@ -1,14 +1,14 @@
 {
   "name": "openssl-static",
-  "version-semver": "3.5.1",
+  "version-semver": "3.5.2",
   "dependencies": [
     "openssl"
   ],
   "overrides": [
     {
       "name": "openssl",
-      "version": "3.5.1"
+      "version": "3.5.2"
     }
   ],
-  "builtin-baseline": "dd3097e305afa53f7b4312371f62058d2e665320"
+  "builtin-baseline": "120deac3062162151622ca4860575a33844ba10b"
 }

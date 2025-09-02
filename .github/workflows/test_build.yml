@@ -1,4 +1,4 @@
-name: Build OpenSSL Static Library
+name: Test Build OpenSSL Static From Source
 on:
   workflow_dispatch:
   release:
@@ -39,11 +39,13 @@ jobs:
         nmake install
 
     - name: Verify build output
-      run: dir openssl-3.5.2\install\lib
+      run: dir openssl-3.5.2\install\
 
     - name: Compress OpenSSL build to maximum 7z
       run: |
-        7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-test-static.7z openssl-3.5.2\install\lib\
+        7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on `
+          openssl-test-static.7z `
+          openssl-3.5.2\install\
 
     - name: Upload builds
       uses: actions/upload-artifact@v4

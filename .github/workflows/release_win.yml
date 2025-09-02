@@ -1,4 +1,4 @@
-name: Release for win lib
+name: Build OpenSSL Static from VCPKG
 on:
   workflow_dispatch:
   release:
