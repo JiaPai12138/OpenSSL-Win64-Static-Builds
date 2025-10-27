@@ -23,7 +23,7 @@ jobs:
           7z a -t7z -m0=LZMA2 -mmt=on -mx3 -md=4m -mfb=32 -ms=1g -mqs=on -sccUTF-8 -bb0 -bse0 -snl -mtc=on -mta=on openssl-static.7z C:/vcpkg/packages/openssl_x64-windows-static-md/
 
       - name: Upload builds
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: OpenSSL_static
           path: openssl-static.7z
