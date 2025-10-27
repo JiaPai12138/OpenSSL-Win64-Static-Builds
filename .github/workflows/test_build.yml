@@ -48,7 +48,7 @@ jobs:
           openssl-3.5.2\install\
 
     - name: Upload builds
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: OpenSSL_static
         path: openssl-test-static.7z
